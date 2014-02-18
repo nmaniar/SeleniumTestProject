@@ -1,7 +1,13 @@
 package org.openqa.selenium.testng;
 
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.common.Config;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.firefox.FirefoxProfile;
+import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.test.NavigationTest;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -30,14 +36,32 @@ public class BBC_TestCases {
 		 Assert.fail();
 	 }
 	  
-	  
+	 
   }
   @BeforeClass
   public void beforeClass() {
+	  
+	  
+	  if(!Config.initFlag)
+		       Config.InitializeProperties();
+	 
+	  if(Config.driverType.equalsIgnoreCase("FireFox"))
+	                           driver = new FirefoxDriver();
+	  else
+	  {
+	     System.setProperty("webdriver.chrome.driver", Config.driverProperty);
+	      driver = new ChromeDriver(); 
+	  }   
+	 // 
+	  
+	 
+	  
   }
 
   @AfterClass
   public void afterClass() {
+	  
+	  driver.quit();
   }
 
   @BeforeTest
@@ -50,14 +74,13 @@ public class BBC_TestCases {
 
   @BeforeSuite
   public void beforeSuite() {
-	  driver = new FirefoxDriver();
-	  driver.get("http://www.bbc.com");
+	  
   }
 
   @AfterSuite
   public void afterSuite() {
 	  
-	  driver.quit();
+	 
   }
 
 }
